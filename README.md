@@ -40,3 +40,26 @@
 
 
 ### Actual time needed to complete: __one hour and 30 min___
+
+## lab12 
+
+## Time Estimates
+### Name of feature: _____1._Storage__________________________
+
+### Estimate of time needed to complete: _an hour___
+
+### Start time: _1:30pm____
+
+### Finish time: 2:30mpm_____
+
+### Name of feature: ______2. Book Component__________________________
+
+### Estimate of time needed to complete: _90min____
+
+### Start time: _3:00pm____
+
+### Finish time: 4:30mpm_____
+
+
+### Actual time needed to complete: __two hours and 30 min___
+
