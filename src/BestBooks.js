@@ -8,6 +8,7 @@ import { Card, Image, Button } from 'react-bootstrap/';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import BookFormModal from './componentes/BookFormModal';
 import './BestBooks.css';
+import UpdateForm from './componentes/UpdateForm';
 
 class MyFavoriteBooks extends React.Component {
   constructor(props) {
@@ -16,7 +17,14 @@ class MyFavoriteBooks extends React.Component {
       bookData: [],
       showBook: false,
       userEmail: '',
-      showModel: false
+      showModel: false,
+      index: 0,
+      showUpdateForm:false,
+      bookName: '',
+      description: '',
+      status: '',
+      img: '',
+
     }
   }
   componentDidMount = async () => {
@@ -52,6 +60,8 @@ class MyFavoriteBooks extends React.Component {
       showModel: false
     })
   }
+
+  
 
   // --------------------------------------function to add data-----------------
 
@@ -97,6 +107,42 @@ class MyFavoriteBooks extends React.Component {
     })
   }
 
+  //------------------------function for update book data---------------
+  
+  
+  showupdateBookForm = async (index) => {
+    await this.setState({
+      showUpdateForm: true,
+      index: index,
+      bookName: this.state.bookData[index].name,
+      description: this.state.bookData[index].description,
+      status: this.state.bookData[index].status,
+      img: this.state.bookData[index].img
+    })
+
+    // console.log('hhhhhhhhhhhh',this.state.catName)
+  }
+
+
+  
+  
+  updateBook = async (event) => {
+    event.preventDefault();
+    let bookFormData = {
+      userEmail: this.state.userEmail,
+      bookName: event.target.name.value,
+      description: event.target.description.value,
+      status: event.target.status.value,
+      img: event.target.img.value
+    }
+    let server = process.env.REACT_APP_LOCALHOST;
+    let bookDataRes = await axios.put(`${server}/updateBook/${this.state.index}`, bookFormData)
+console.log(bookDataRes.data,'ppppppppppppppp')
+    this.setState({
+      bookData: bookDataRes.data
+    })
+  }
+  
 
   render() {
     return (
@@ -110,10 +156,25 @@ class MyFavoriteBooks extends React.Component {
           to add new book
         </p>
         <Button onClick={this.showHandler} variant="warning">Add Book</Button>
-
-        <BookFormModal addBook={this.addBook} show={this.state.showModel} handelClose={this.handelClose} />
-
-
+        <br />
+        <br />
+        <br />
+        <BookFormModal
+          addBook={this.addBook}
+          show={this.state.showModel}
+          handelClose={this.handelClose}
+        />
+        <br />
+        <br />
+        <br />
+        {this.state.showUpdateForm &&
+        <UpdateForm
+          bookName={this.state.bookName}
+          description={this.state.description}
+          status={this.state.status}
+          img={this.state.img}
+          updateBook={this.updateBook}
+        />}
         <div>
           {this.state.showBook &&
             this.state.bookData.map((item, index) => {
@@ -131,6 +192,7 @@ class MyFavoriteBooks extends React.Component {
                       status: {item.status}
                     </Card.Text>
                     <Button onClick={() => this.deleteBook(index)} variant="danger">Delete </Button>
+                    <Button onClick={() => this.showupdateBookForm(index)} variant="danger">update book </Button>
                   </Card.Body>
                 </Card>
               )
